@@ -55,12 +55,9 @@ export async function getBankrunSetup(accounts: AddedAccount[] = []) {
 
   const wrappedContext = new BankrunContextWrapper(context);
   const provider = wrappedContext.provider;
-  const program = new Program(idl as Lottery, provider);
-  const sbProgram = new Program(sbIdl as SbOnDemand, provider);
-  const queue = new Queue(
-    sbProgram as unknown as Program<Idl>,
-    ON_DEMAND_MAINNET_QUEUE
-  );
+  const program = new Program<Lottery>(idl, provider);
+  const sbProgram = new Program<SbOnDemand>(sbIdl, provider);
+  const queue = new Queue(sbProgram as Program<Idl>, ON_DEMAND_MAINNET_QUEUE);
 
   await queue.loadData();
 

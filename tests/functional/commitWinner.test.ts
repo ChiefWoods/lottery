@@ -94,7 +94,7 @@ describe("commitWInner", () => {
   test.skip("commit a winner", async () => {
     // TODO: getSlot is under provider.connection.banksClient.getSlot, not provider.connection.getSlot
     const [randomness, rngKp, ixs] = await Randomness.createAndCommitIxs(
-      sbProgram as unknown as Program<Idl>,
+      sbProgram as Program<Idl>,
       queue.pubkey
     );
 
