@@ -10,7 +10,7 @@ import {
   ON_DEMAND_MAINNET_QUEUE,
   Queue,
 } from "@switchboard-xyz/on-demand";
-import { SbOnDemand } from "./fixtures/sd_on_demand";
+import { SbOnDemand } from "./fixtures/sb_on_demand";
 import sbIdl from "./fixtures/sb_on_demand.json";
 import queueData from "./fixtures/queue.json";
 import guardianQueueData from "./fixtures/guardian_queue.json";
@@ -50,7 +50,7 @@ export async function getBankrunSetup(accounts: AddedAccount[] = []) {
         },
       },
     ],
-    400000n
+    400000n,
   );
 
   const wrappedContext = new BankrunContextWrapper(context);

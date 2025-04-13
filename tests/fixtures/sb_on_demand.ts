@@ -41,7 +41,7 @@ export type SbOnDemand = {
         {
           name: "recentSlothashes";
           address: "SysvarS1otHashes111111111111111111111111111";
-        }
+        },
       ];
       args: [
         {
@@ -51,7 +51,7 @@ export type SbOnDemand = {
               name: "guardianQuoteVerifyParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -73,7 +73,7 @@ export type SbOnDemand = {
           name: "authority";
           signer: true;
           relations: ["state"];
-        }
+        },
       ];
       args: [
         {
@@ -83,7 +83,7 @@ export type SbOnDemand = {
               name: "guardianRegisterParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -106,7 +106,7 @@ export type SbOnDemand = {
           name: "authority";
           signer: true;
           relations: ["state"];
-        }
+        },
       ];
       args: [
         {
@@ -116,7 +116,7 @@ export type SbOnDemand = {
               name: "guardianUnregisterParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -139,7 +139,7 @@ export type SbOnDemand = {
               {
                 kind: "account";
                 path: "oracle";
-              }
+              },
             ];
           };
         },
@@ -193,7 +193,7 @@ export type SbOnDemand = {
         {
           name: "delegationGroup";
           writable: true;
-        }
+        },
       ];
       args: [
         {
@@ -203,7 +203,7 @@ export type SbOnDemand = {
               name: "oracleHeartbeatParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -227,7 +227,7 @@ export type SbOnDemand = {
               {
                 kind: "account";
                 path: "oracle";
-              }
+              },
             ];
           };
         },
@@ -266,7 +266,7 @@ export type SbOnDemand = {
         {
           name: "stakePool";
           relations: ["programState"];
-        }
+        },
       ];
       args: [
         {
@@ -276,7 +276,7 @@ export type SbOnDemand = {
               name: "oracleInitParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -299,7 +299,7 @@ export type SbOnDemand = {
               {
                 kind: "arg";
                 path: "params.source_oracle_key";
-              }
+              },
             ];
           };
         },
@@ -315,7 +315,7 @@ export type SbOnDemand = {
               {
                 kind: "account";
                 path: "oracle";
-              }
+              },
             ];
           };
         },
@@ -352,7 +352,7 @@ export type SbOnDemand = {
         },
         {
           name: "stakePool";
-        }
+        },
       ];
       args: [
         {
@@ -362,7 +362,7 @@ export type SbOnDemand = {
               name: "oracleInitSvmParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -376,7 +376,7 @@ export type SbOnDemand = {
           name: "authority";
           signer: true;
           relations: ["oracle"];
-        }
+        },
       ];
       args: [
         {
@@ -386,7 +386,7 @@ export type SbOnDemand = {
               name: "oracleSetConfigsParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -408,7 +408,7 @@ export type SbOnDemand = {
               {
                 kind: "account";
                 path: "oracle";
-              }
+              },
             ];
           };
         },
@@ -476,7 +476,7 @@ export type SbOnDemand = {
         },
         {
           name: "delegationGroup";
-        }
+        },
       ];
       args: [
         {
@@ -486,7 +486,7 @@ export type SbOnDemand = {
               name: "oracleUpdateDelegationParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -499,7 +499,7 @@ export type SbOnDemand = {
         },
         {
           name: "granter";
-        }
+        },
       ];
       args: [
         {
@@ -509,7 +509,7 @@ export type SbOnDemand = {
               name: "permissionSetParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -560,7 +560,7 @@ export type SbOnDemand = {
         {
           name: "addressLookupTableProgram";
           address: "AddressLookupTab1e1111111111111111111111111";
-        }
+        },
       ];
       args: [
         {
@@ -570,7 +570,7 @@ export type SbOnDemand = {
               name: "pullFeedCloseParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -643,13 +643,13 @@ export type SbOnDemand = {
                   126,
                   255,
                   0,
-                  169
+                  169,
                 ];
               },
               {
                 kind: "account";
                 path: "wrappedSolMint";
-              }
+              },
             ];
             program: {
               kind: "const";
@@ -685,7 +685,7 @@ export type SbOnDemand = {
                 219,
                 233,
                 248,
-                89
+                89,
               ];
             };
           };
@@ -712,7 +712,7 @@ export type SbOnDemand = {
         {
           name: "addressLookupTableProgram";
           address: "AddressLookupTab1e1111111111111111111111111";
-        }
+        },
       ];
       args: [
         {
@@ -722,7 +722,7 @@ export type SbOnDemand = {
               name: "pullFeedInitParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -737,7 +737,7 @@ export type SbOnDemand = {
           name: "authority";
           signer: true;
           relations: ["pullFeed"];
-        }
+        },
       ];
       args: [
         {
@@ -747,7 +747,7 @@ export type SbOnDemand = {
               name: "pullFeedSetConfigsParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -789,7 +789,7 @@ export type SbOnDemand = {
         {
           name: "tokenMint";
           address: "So11111111111111111111111111111111111111112";
-        }
+        },
       ];
       args: [
         {
@@ -799,7 +799,7 @@ export type SbOnDemand = {
               name: "pullFeedSubmitResponseParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -836,7 +836,7 @@ export type SbOnDemand = {
         {
           name: "tokenMint";
           address: "So11111111111111111111111111111111111111112";
-        }
+        },
       ];
       args: [
         {
@@ -846,7 +846,7 @@ export type SbOnDemand = {
               name: "pullFeedSubmitResponseManyParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -868,7 +868,7 @@ export type SbOnDemand = {
               {
                 kind: "arg";
                 path: "params.source_queue_key";
-              }
+              },
             ];
           };
           relations: ["feed"];
@@ -900,7 +900,7 @@ export type SbOnDemand = {
         {
           name: "tokenMint";
           address: "So11111111111111111111111111111111111111112";
-        }
+        },
       ];
       args: [
         {
@@ -910,7 +910,7 @@ export type SbOnDemand = {
               name: "pullFeedSubmitResponseSvmParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -930,7 +930,7 @@ export type SbOnDemand = {
         },
         {
           name: "state";
-        }
+        },
       ];
       args: [
         {
@@ -940,7 +940,7 @@ export type SbOnDemand = {
               name: "queueAddMrEnclaveParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -959,7 +959,7 @@ export type SbOnDemand = {
         {
           name: "state";
           writable: true;
-        }
+        },
       ];
       args: [
         {
@@ -969,7 +969,7 @@ export type SbOnDemand = {
               name: "queueAllowSubsidiesParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -990,7 +990,7 @@ export type SbOnDemand = {
         },
         {
           name: "state";
-        }
+        },
       ];
       args: [
         {
@@ -1000,7 +1000,7 @@ export type SbOnDemand = {
               name: "queueGarbageCollectParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1055,13 +1055,13 @@ export type SbOnDemand = {
                   126,
                   255,
                   0,
-                  169
+                  169,
                 ];
               },
               {
                 kind: "account";
                 path: "nativeMint";
-              }
+              },
             ];
             program: {
               kind: "const";
@@ -1097,7 +1097,7 @@ export type SbOnDemand = {
                 219,
                 233,
                 248,
-                89
+                89,
               ];
             };
           };
@@ -1140,7 +1140,7 @@ export type SbOnDemand = {
         {
           name: "associatedTokenProgram";
           address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
-        }
+        },
       ];
       args: [
         {
@@ -1150,7 +1150,7 @@ export type SbOnDemand = {
               name: "queueInitParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1194,7 +1194,7 @@ export type SbOnDemand = {
         },
         {
           name: "stakePool";
-        }
+        },
       ];
       args: [
         {
@@ -1204,7 +1204,7 @@ export type SbOnDemand = {
               name: "queueInitDelegationGroupParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1223,7 +1223,7 @@ export type SbOnDemand = {
               {
                 kind: "arg";
                 path: "params.source_queue_key";
-              }
+              },
             ];
           };
         },
@@ -1270,13 +1270,13 @@ export type SbOnDemand = {
                   126,
                   255,
                   0,
-                  169
+                  169,
                 ];
               },
               {
                 kind: "account";
                 path: "nativeMint";
-              }
+              },
             ];
             program: {
               kind: "const";
@@ -1312,7 +1312,7 @@ export type SbOnDemand = {
                 219,
                 233,
                 248,
-                89
+                89,
               ];
             };
           };
@@ -1355,7 +1355,7 @@ export type SbOnDemand = {
         {
           name: "associatedTokenProgram";
           address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
-        }
+        },
       ];
       args: [
         {
@@ -1365,7 +1365,7 @@ export type SbOnDemand = {
               name: "queueInitSvmParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1386,7 +1386,7 @@ export type SbOnDemand = {
         },
         {
           name: "state";
-        }
+        },
       ];
       args: [
         {
@@ -1396,7 +1396,7 @@ export type SbOnDemand = {
               name: "queueOverrideSvmParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1416,7 +1416,7 @@ export type SbOnDemand = {
         },
         {
           name: "state";
-        }
+        },
       ];
       args: [
         {
@@ -1426,7 +1426,7 @@ export type SbOnDemand = {
               name: "queueRemoveMrEnclaveParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1443,7 +1443,7 @@ export type SbOnDemand = {
         },
         {
           name: "state";
-        }
+        },
       ];
       args: [
         {
@@ -1453,7 +1453,7 @@ export type SbOnDemand = {
               name: "queueSetConfigsParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1480,7 +1480,7 @@ export type SbOnDemand = {
           name: "authority";
           signer: true;
           relations: ["randomness"];
-        }
+        },
       ];
       args: [
         {
@@ -1490,7 +1490,7 @@ export type SbOnDemand = {
               name: "randomnessCommitParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1545,13 +1545,13 @@ export type SbOnDemand = {
                   126,
                   255,
                   0,
-                  169
+                  169,
                 ];
               },
               {
                 kind: "account";
                 path: "wrappedSolMint";
-              }
+              },
             ];
             program: {
               kind: "const";
@@ -1587,7 +1587,7 @@ export type SbOnDemand = {
                 219,
                 233,
                 248,
-                89
+                89,
               ];
             };
           };
@@ -1634,7 +1634,7 @@ export type SbOnDemand = {
         {
           name: "addressLookupTableProgram";
           address: "AddressLookupTab1e1111111111111111111111111";
-        }
+        },
       ];
       args: [
         {
@@ -1644,7 +1644,7 @@ export type SbOnDemand = {
               name: "randomnessInitParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1691,13 +1691,13 @@ export type SbOnDemand = {
                   116,
                   97,
                   116,
-                  115
+                  115,
                 ];
               },
               {
                 kind: "account";
                 path: "oracle";
-              }
+              },
             ];
           };
         },
@@ -1733,7 +1733,7 @@ export type SbOnDemand = {
         },
         {
           name: "programState";
-        }
+        },
       ];
       args: [
         {
@@ -1743,7 +1743,7 @@ export type SbOnDemand = {
               name: "randomnessRevealParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1758,7 +1758,7 @@ export type SbOnDemand = {
               {
                 kind: "const";
                 value: [83, 84, 65, 84, 69];
-              }
+              },
             ];
           };
         },
@@ -1770,7 +1770,7 @@ export type SbOnDemand = {
         {
           name: "systemProgram";
           address: "11111111111111111111111111111111";
-        }
+        },
       ];
       args: [
         {
@@ -1780,7 +1780,7 @@ export type SbOnDemand = {
               name: "stateInitParams";
             };
           };
-        }
+        },
       ];
     },
     {
@@ -1808,7 +1808,7 @@ export type SbOnDemand = {
         {
           name: "systemProgram";
           address: "11111111111111111111111111111111";
-        }
+        },
       ];
       args: [
         {
@@ -1818,9 +1818,9 @@ export type SbOnDemand = {
               name: "stateSetConfigsParams";
             };
           };
-        }
+        },
       ];
-    }
+    },
   ];
   accounts: [
     {
@@ -1846,7 +1846,7 @@ export type SbOnDemand = {
     {
       name: "state";
       discriminator: [216, 146, 107, 94, 104, 75, 182, 177];
-    }
+    },
   ];
   events: [
     {
@@ -1908,7 +1908,7 @@ export type SbOnDemand = {
     {
       name: "randomnessCommitEvent";
       discriminator: [88, 60, 172, 90, 112, 10, 206, 147];
-    }
+    },
   ];
   errors: [
     {
@@ -2126,7 +2126,7 @@ export type SbOnDemand = {
     {
       code: 6053;
       name: "guardianReregisterAttempt";
-    }
+    },
   ];
   types: [
     {
@@ -2141,7 +2141,7 @@ export type SbOnDemand = {
           {
             name: "stdDev";
             docs: [
-              "The standard deviation of the submissions needed for quorom size"
+              "The standard deviation of the submissions needed for quorom size",
             ];
             type: "f32";
           },
@@ -2154,7 +2154,7 @@ export type SbOnDemand = {
             name: "slot";
             docs: ["The slot at which this value was signed."];
             type: "u64";
-          }
+          },
         ];
       };
     },
@@ -2186,7 +2186,7 @@ export type SbOnDemand = {
           {
             name: "reward";
             type: "u32";
-          }
+          },
         ];
       };
     },
@@ -2202,14 +2202,14 @@ export type SbOnDemand = {
           {
             name: "value";
             docs: [
-              "The median value of the submissions needed for quorom size"
+              "The median value of the submissions needed for quorom size",
             ];
             type: "i128";
           },
           {
             name: "stdDev";
             docs: [
-              "The standard deviation of the submissions needed for quorom size"
+              "The standard deviation of the submissions needed for quorom size",
             ];
             type: "i128";
           },
@@ -2226,14 +2226,14 @@ export type SbOnDemand = {
           {
             name: "minValue";
             docs: [
-              "The minimum value of the submissions needed for quorom size"
+              "The minimum value of the submissions needed for quorom size",
             ];
             type: "i128";
           },
           {
             name: "maxValue";
             docs: [
-              "The maximum value of the submissions needed for quorom size"
+              "The maximum value of the submissions needed for quorom size",
             ];
             type: "i128";
           },
@@ -2245,7 +2245,7 @@ export type SbOnDemand = {
           {
             name: "submissionIdx";
             docs: [
-              "The index of the submission that was used to calculate this result"
+              "The index of the submission that was used to calculate this result",
             ];
             type: "u8";
           },
@@ -2263,7 +2263,7 @@ export type SbOnDemand = {
           {
             name: "minSlot";
             docs: [
-              "The slot at which the first considered submission was made"
+              "The slot at which the first considered submission was made",
             ];
             type: "u64";
           },
@@ -2271,7 +2271,7 @@ export type SbOnDemand = {
             name: "maxSlot";
             docs: ["The slot at which the last considered submission was made"];
             type: "u64";
-          }
+          },
         ];
       };
     },
@@ -2287,7 +2287,7 @@ export type SbOnDemand = {
           {
             name: "queue";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -2307,7 +2307,7 @@ export type SbOnDemand = {
           {
             name: "oracle";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -2359,7 +2359,7 @@ export type SbOnDemand = {
             type: {
               vec: "u32";
             };
-          }
+          },
         ];
       };
     },
@@ -2401,7 +2401,7 @@ export type SbOnDemand = {
           {
             name: "currentSignatureCount";
             type: "i64";
-          }
+          },
         ];
       };
     },
@@ -2425,7 +2425,7 @@ export type SbOnDemand = {
           {
             name: "recoveryId";
             type: "u8";
-          }
+          },
         ];
       };
     },
@@ -2450,14 +2450,14 @@ export type SbOnDemand = {
           {
             name: "authority";
             docs: [
-              "The authority of the EnclaveAccount which is permitted to make account changes."
+              "The authority of the EnclaveAccount which is permitted to make account changes.",
             ];
             type: "pubkey";
           },
           {
             name: "queue";
             docs: [
-              "Queue used for attestation to verify a MRENCLAVE measurement."
+              "Queue used for attestation to verify a MRENCLAVE measurement.",
             ];
             type: "pubkey";
           },
@@ -2491,7 +2491,7 @@ export type SbOnDemand = {
           {
             name: "isOnQueue";
             docs: [
-              "Whether the quote is located on the AttestationQueues buffer."
+              "Whether the quote is located on the AttestationQueues buffer.",
             ];
             type: "u8";
           },
@@ -2532,7 +2532,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 1024];
             };
-          }
+          },
         ];
       };
     },
@@ -2568,7 +2568,7 @@ export type SbOnDemand = {
           {
             name: "stakeScore";
             type: "u64";
-          }
+          },
         ];
       };
     },
@@ -2584,7 +2584,7 @@ export type SbOnDemand = {
           {
             name: "queue";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -2600,7 +2600,7 @@ export type SbOnDemand = {
                 array: ["u8", 64];
               };
             };
-          }
+          },
         ];
       };
     },
@@ -2612,7 +2612,7 @@ export type SbOnDemand = {
           {
             name: "oracle";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -2640,7 +2640,7 @@ export type SbOnDemand = {
                 array: ["u8", 64];
               };
             };
-          }
+          },
         ];
       };
     },
@@ -2672,7 +2672,7 @@ export type SbOnDemand = {
           {
             name: "sourceOracleKey";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -2688,7 +2688,7 @@ export type SbOnDemand = {
           {
             name: "queue";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -2700,7 +2700,7 @@ export type SbOnDemand = {
           {
             name: "oracle";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -2716,7 +2716,7 @@ export type SbOnDemand = {
           {
             name: "oracle";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -2738,7 +2738,7 @@ export type SbOnDemand = {
                 array: ["u8", 64];
               };
             };
-          }
+          },
         ];
       };
     },
@@ -2763,7 +2763,7 @@ export type SbOnDemand = {
             name: "finalizedEpoch";
             docs: [
               "The last epoch that has completed. cleared after registered with the",
-              "staking program."
+              "staking program.",
             ];
             type: {
               defined: {
@@ -2775,7 +2775,7 @@ export type SbOnDemand = {
             name: "currentEpoch";
             docs: [
               "The current epoch info being used by the oracle. for stake. Will moved",
-              "to finalized_epoch as soon as the epoch is over."
+              "to finalized_epoch as soon as the epoch is over.",
             ];
             type: {
               defined: {
@@ -2811,7 +2811,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 1024];
             };
-          }
+          },
         ];
       };
     },
@@ -2843,7 +2843,7 @@ export type SbOnDemand = {
             name: "value";
             docs: ["The value that was submitted."];
             type: "i128";
-          }
+          },
         ];
       };
     },
@@ -2855,7 +2855,7 @@ export type SbOnDemand = {
           {
             name: "reserved1";
             type: "u64";
-          }
+          },
         ];
       };
     },
@@ -2867,7 +2867,7 @@ export type SbOnDemand = {
           {
             name: "permission";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -2883,7 +2883,7 @@ export type SbOnDemand = {
           {
             name: "enable";
             type: "bool";
-          }
+          },
         ];
       };
     },
@@ -2907,7 +2907,7 @@ export type SbOnDemand = {
                     name: "oracleSubmission";
                   };
                 },
-                32
+                32,
               ];
             };
           },
@@ -2915,7 +2915,7 @@ export type SbOnDemand = {
             name: "authority";
             docs: [
               "The public key of the authority that can update the feed hash that",
-              "this account will use for registering updates."
+              "this account will use for registering updates.",
             ];
             type: "pubkey";
           },
@@ -2923,7 +2923,7 @@ export type SbOnDemand = {
             name: "queue";
             docs: [
               "The public key of the queue which oracles must be bound to in order to",
-              "submit data to this feed."
+              "submit data to this feed.",
             ];
             type: "pubkey";
           },
@@ -2931,7 +2931,7 @@ export type SbOnDemand = {
             name: "feedHash";
             docs: [
               "SHA-256 hash of the job schema oracles will execute to produce data",
-              "for this feed."
+              "for this feed.",
             ];
             type: {
               array: ["u8", 32];
@@ -3019,7 +3019,7 @@ export type SbOnDemand = {
                     name: "compactResult";
                   };
                 },
-                32
+                32,
               ];
             };
           },
@@ -3040,7 +3040,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 256];
             };
-          }
+          },
         ];
       };
     },
@@ -3063,7 +3063,7 @@ export type SbOnDemand = {
           {
             name: "oracle";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -3115,7 +3115,7 @@ export type SbOnDemand = {
             type: {
               option: "bool";
             };
-          }
+          },
         ];
       };
     },
@@ -3183,7 +3183,7 @@ export type SbOnDemand = {
             type: {
               option: "bool";
             };
-          }
+          },
         ];
       };
     },
@@ -3205,7 +3205,7 @@ export type SbOnDemand = {
                 };
               };
             };
-          }
+          },
         ];
       };
     },
@@ -3227,7 +3227,7 @@ export type SbOnDemand = {
                 };
               };
             };
-          }
+          },
         ];
       };
     },
@@ -3257,7 +3257,7 @@ export type SbOnDemand = {
           {
             name: "queueBump";
             type: "u8";
-          }
+          },
         ];
       };
     },
@@ -3289,7 +3289,7 @@ export type SbOnDemand = {
           {
             name: "reward";
             type: "u32";
-          }
+          },
         ];
       };
     },
@@ -3303,7 +3303,7 @@ export type SbOnDemand = {
         "For an oracle to join the queue, the oracle must first submit their enclave quote on-chain and",
         "wait for an existing oracle to attest their quote. If the oracle's quote matches an expected",
         "measurement within the queues mr_enclaves config, it is granted permissions and will start",
-        "being assigned update requests."
+        "being assigned update requests.",
       ];
       serialization: "bytemuck";
       repr: {
@@ -3315,7 +3315,7 @@ export type SbOnDemand = {
           {
             name: "authority";
             docs: [
-              "The address of the authority which is permitted to add/remove allowed enclave measurements."
+              "The address of the authority which is permitted to add/remove allowed enclave measurements.",
             ];
             type: "pubkey";
           },
@@ -3327,7 +3327,7 @@ export type SbOnDemand = {
                 {
                   array: ["u8", 32];
                 },
-                32
+                32,
               ];
             };
           },
@@ -3335,7 +3335,7 @@ export type SbOnDemand = {
             name: "oracleKeys";
             docs: [
               "The addresses of the quote oracles who have a valid",
-              "verification status and have heartbeated on-chain recently."
+              "verification status and have heartbeated on-chain recently.",
             ];
             type: {
               array: ["pubkey", 128];
@@ -3344,14 +3344,14 @@ export type SbOnDemand = {
           {
             name: "maxQuoteVerificationAge";
             docs: [
-              "The maximum allowable time until a EnclaveAccount needs to be re-verified on-chain."
+              "The maximum allowable time until a EnclaveAccount needs to be re-verified on-chain.",
             ];
             type: "i64";
           },
           {
             name: "lastHeartbeat";
             docs: [
-              "The unix timestamp when the last quote oracle heartbeated on-chain."
+              "The unix timestamp when the last quote oracle heartbeated on-chain.",
             ];
             type: "i64";
           },
@@ -3362,7 +3362,7 @@ export type SbOnDemand = {
           {
             name: "oracleMinStake";
             docs: [
-              "The minimum number of lamports a quote oracle needs to lock-up in order to heartbeat and verify other quotes."
+              "The minimum number of lamports a quote oracle needs to lock-up in order to heartbeat and verify other quotes.",
             ];
             type: "u64";
           },
@@ -3378,7 +3378,7 @@ export type SbOnDemand = {
           {
             name: "oracleKeysLen";
             docs: [
-              "The length of valid quote oracles for the given attestation queue."
+              "The length of valid quote oracles for the given attestation queue.",
             ];
             type: "u32";
           },
@@ -3390,14 +3390,14 @@ export type SbOnDemand = {
           {
             name: "currIdx";
             docs: [
-              "Incrementer used to track the current quote oracle permitted to run any available functions."
+              "Incrementer used to track the current quote oracle permitted to run any available functions.",
             ];
             type: "u32";
           },
           {
             name: "gcIdx";
             docs: [
-              "Incrementer used to garbage collect and remove stale quote oracles."
+              "Incrementer used to garbage collect and remove stale quote oracles.",
             ];
             type: "u32";
           },
@@ -3465,7 +3465,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 512];
             };
-          }
+          },
         ];
       };
     },
@@ -3483,7 +3483,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 32];
             };
-          }
+          },
         ];
       };
     },
@@ -3497,7 +3497,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 32];
             };
-          }
+          },
         ];
       };
     },
@@ -3509,7 +3509,7 @@ export type SbOnDemand = {
           {
             name: "allowSubsidies";
             type: "u8";
-          }
+          },
         ];
       };
     },
@@ -3521,7 +3521,7 @@ export type SbOnDemand = {
           {
             name: "idx";
             type: "u32";
-          }
+          },
         ];
       };
     },
@@ -3540,7 +3540,7 @@ export type SbOnDemand = {
           {
             name: "queue";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -3576,7 +3576,7 @@ export type SbOnDemand = {
           {
             name: "recentSlot";
             type: "u64";
-          }
+          },
         ];
       };
     },
@@ -3616,7 +3616,7 @@ export type SbOnDemand = {
           {
             name: "sourceQueueKey";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -3644,7 +3644,7 @@ export type SbOnDemand = {
           {
             name: "slot";
             type: "u64";
-          }
+          },
         ];
       };
     },
@@ -3662,7 +3662,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 32];
             };
-          }
+          },
         ];
       };
     },
@@ -3676,7 +3676,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 32];
             };
-          }
+          },
         ];
       };
     },
@@ -3702,7 +3702,7 @@ export type SbOnDemand = {
             type: {
               option: "i64";
             };
-          }
+          },
         ];
       };
     },
@@ -3723,7 +3723,7 @@ export type SbOnDemand = {
           {
             name: "mrEnclave";
             docs: [
-              "The quotes MRENCLAVE measurement dictating the contents of the secure enclave."
+              "The quotes MRENCLAVE measurement dictating the contents of the secure enclave.",
             ];
             type: {
               array: ["u8", 32];
@@ -3748,14 +3748,14 @@ export type SbOnDemand = {
           {
             name: "validUntil";
             docs: [
-              "The unix timestamp when the quotes verification status expires."
+              "The unix timestamp when the quotes verification status expires.",
             ];
             type: "i64";
           },
           {
             name: "quoteRegistry";
             docs: [
-              "The off-chain registry where the verifiers quote can be located."
+              "The off-chain registry where the verifiers quote can be located.",
             ];
             type: {
               array: ["u8", 32];
@@ -3764,7 +3764,7 @@ export type SbOnDemand = {
           {
             name: "registryKey";
             docs: [
-              "Key to lookup the buffer data on IPFS or an alternative decentralized storage solution."
+              "Key to lookup the buffer data on IPFS or an alternative decentralized storage solution.",
             ];
             type: {
               array: ["u8", 64];
@@ -3773,7 +3773,7 @@ export type SbOnDemand = {
           {
             name: "secp256k1Signer";
             docs: [
-              "The secp256k1 public key of the enclave signer. Derived from the enclave_signer."
+              "The secp256k1 public key of the enclave signer. Derived from the enclave_signer.",
             ];
             type: {
               array: ["u8", 64];
@@ -3843,7 +3843,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 512];
             };
-          }
+          },
         ];
       };
     },
@@ -3919,7 +3919,7 @@ export type SbOnDemand = {
           {
             name: "activeSecp256k1Expiration";
             type: "i64";
-          }
+          },
         ];
       };
     },
@@ -3945,7 +3945,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 32];
             };
-          }
+          },
         ];
       };
     },
@@ -3964,7 +3964,7 @@ export type SbOnDemand = {
           {
             name: "recentSlot";
             type: "u64";
-          }
+          },
         ];
       };
     },
@@ -3988,7 +3988,7 @@ export type SbOnDemand = {
             type: {
               array: ["u8", 32];
             };
-          }
+          },
         ];
       };
     },
@@ -4141,7 +4141,7 @@ export type SbOnDemand = {
             type: {
               array: ["pubkey", 32];
             };
-          }
+          },
         ];
       };
     },
@@ -4165,7 +4165,7 @@ export type SbOnDemand = {
           {
             name: "slotEnd";
             type: "u64";
-          }
+          },
         ];
       };
     },
@@ -4236,7 +4236,7 @@ export type SbOnDemand = {
           {
             name: "rmCostWl";
             type: "pubkey";
-          }
+          },
         ];
       };
     },
@@ -4262,7 +4262,7 @@ export type SbOnDemand = {
           {
             name: "offset";
             type: "u8";
-          }
+          },
         ];
       };
     },
@@ -4284,9 +4284,9 @@ export type SbOnDemand = {
           {
             name: "recoveryId";
             type: "u8";
-          }
+          },
         ];
       };
-    }
+    },
   ];
 };
