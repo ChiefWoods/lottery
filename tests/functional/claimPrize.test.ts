@@ -22,7 +22,7 @@ import {
   getTicketMintPda,
 } from "../pda";
 import { getLotteryAcc } from "../accounts";
-import { SbOnDemand } from "../fixtures/sd_on_demand";
+import { SbOnDemand } from "../fixtures/sb_on_demand";
 import { Queue, Randomness } from "@switchboard-xyz/on-demand";
 
 describe("choose a winner", () => {
@@ -59,7 +59,7 @@ describe("choose a winner", () => {
             executable: false,
           },
         };
-      })
+      }),
     ));
 
     const {
@@ -96,7 +96,7 @@ describe("choose a winner", () => {
       epochStartTimestamp,
       epoch,
       leaderScheduleEpoch,
-      newTime
+      newTime,
     );
     context.setClock(clock);
 
@@ -114,12 +114,13 @@ describe("choose a winner", () => {
 
     [randomness, rngKp, ixs] = await Randomness.createAndCommitIxs(
       sbProgram as unknown as Program<Idl>,
-      queue.pubkey
+      queue.pubkey,
     );
 
     await program.methods
       .commitWinner()
       .accountsPartial({
+        authority: authority.publicKey,
         lottery: lotteryPda,
         randomnessAccountData: randomness.pubkey,
         tokenProgram,
@@ -140,7 +141,7 @@ describe("choose a winner", () => {
       epochStartTimestamp,
       epoch,
       leaderScheduleEpoch,
-      newTime
+      newTime,
     );
     context.setClock(clock);
 
@@ -179,10 +180,10 @@ describe("choose a winner", () => {
 
     expect(postPotAmount).toEqual(0);
     expect(Number(postWinnerBal)).toEqual(
-      Number(initWinnerBal) + initPotAmount
+      Number(initWinnerBal) + initPotAmount,
     );
     expect(Number(postLotteryBal)).toEqual(
-      Number(initLotteryBal) - initPotAmount
+      Number(initLotteryBal) - initPotAmount,
     );
 
     const ticketMintPda = getTicketMintPda(new BN(0));
@@ -190,13 +191,13 @@ describe("choose a winner", () => {
       ticketMintPda,
       buyer.publicKey,
       false,
-      tokenProgram
+      tokenProgram,
     );
     const ticketMintAtaAcc = await getAccount(
       provider.connection,
       ticketMintAta,
       "confirmed",
-      tokenProgram
+      tokenProgram,
     );
 
     expect(Number(ticketMintAtaAcc.amount)).toEqual(1);
@@ -212,7 +213,7 @@ describe("choose a winner", () => {
       epochStartTimestamp,
       epoch,
       leaderScheduleEpoch,
-      newTime
+      newTime,
     );
     context.setClock(clock);
 

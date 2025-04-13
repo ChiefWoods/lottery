@@ -14,7 +14,7 @@ import { getBankrunSetup } from "../setup";
 import { TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { getCollectionMintPdaAndBump, getLotteryPdaAndBump } from "../pda";
 import { getLotteryAcc } from "../accounts";
-import { SbOnDemand } from "../fixtures/sd_on_demand";
+import { SbOnDemand } from "../fixtures/sb_on_demand";
 import { Queue, Randomness } from "@switchboard-xyz/on-demand";
 
 describe("choose a winner", () => {
@@ -51,7 +51,7 @@ describe("choose a winner", () => {
             executable: false,
           },
         };
-      })
+      }),
     ));
 
     const { unixTimestamp } = await context.banksClient.getClock();
@@ -85,7 +85,7 @@ describe("choose a winner", () => {
       epochStartTimestamp,
       epoch,
       leaderScheduleEpoch,
-      newTime
+      newTime,
     );
     context.setClock(clock);
 
@@ -103,12 +103,14 @@ describe("choose a winner", () => {
 
     [randomness, rngKp, ixs] = await Randomness.createAndCommitIxs(
       sbProgram as unknown as Program<Idl>,
-      queue.pubkey
+      queue.pubkey,
     );
 
     await program.methods
       .commitWinner()
-      .accounts({
+      .accountsPartial({
+        authority: authority.publicKey,
+        lottery: lotteryPda,
         randomnessAccountData: randomness.pubkey,
         tokenProgram,
       })
@@ -127,7 +129,7 @@ describe("choose a winner", () => {
       epochStartTimestamp,
       epoch,
       leaderScheduleEpoch,
-      newTime
+      newTime,
     );
     context.setClock(clock);
 
@@ -160,7 +162,7 @@ describe("choose a winner", () => {
       epochStartTimestamp,
       epoch,
       leaderScheduleEpoch,
-      newTime
+      newTime,
     );
     context.setClock(clock);
 
@@ -219,7 +221,7 @@ describe("choose a winner", () => {
       epochStartTimestamp,
       epoch,
       leaderScheduleEpoch,
-      newTime
+      newTime,
     );
     context.setClock(clock);
 

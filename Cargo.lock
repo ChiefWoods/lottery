@@ -1878,9 +1878,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.138"
+version = "1.0.140"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d434192e7da787e94a6ea7e9670b26a036d0ca41e0b7efb2676dd32bae872949"
+checksum = "20068b6e96dc6c9bd23e01df8827e6c7e1f2fddd43c21810382803c136b99373"
 dependencies = [
  "itoa",
  "memchr",
@@ -2129,9 +2129,9 @@ dependencies = [
 
 [[package]]
 name = "solana-curve25519"
-version = "2.2.1"
+version = "2.2.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f213e3a853a23814dee39d730cd3a5583b7b1e6b37b2cd4d940bbe62df7acc16"
+checksum = "7d9499a822cd1acdac4fcec1acb500819f84b2f83042d6ae0d19cc45b32747f9"
 dependencies = [
  "bytemuck",
  "bytemuck_derive",
@@ -3087,9 +3087,9 @@ dependencies = [
 
 [[package]]
 name = "solana-zk-sdk"
-version = "2.2.1"
+version = "2.2.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d8318220b73552a2765c6545a4be04fc87fe21b6dd0cb8c2b545a66121bf5b8a"
+checksum = "a891726b0eedc02be46f0cfd2685cafdd7a8ce9d9663f4f7cbd9c883d792896c"
 dependencies = [
  "aes-gcm-siv",
  "base64 0.22.1",
@@ -3542,9 +3542,9 @@ dependencies = [
 
 [[package]]
 name = "switchboard-on-demand"
-version = "0.3.4"
+version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "823fb60772f02779cddcdda22f735acf24eefe74ed696210cf4f41a749efb4e4"
+checksum = "2ee00734181d7fdb6a5c9c72374d5257ba3991185db7dd6c5512f500faf70527"
 dependencies = [
  "arc-swap",
  "async-trait",
@@ -3556,6 +3556,7 @@ dependencies = [
  "lazy_static",
  "libsecp256k1 0.7.1",
  "log",
+ "once_cell",
  "rust_decimal",
  "serde",
  "sha2 0.10.8",

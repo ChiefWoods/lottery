@@ -17,7 +17,6 @@ import {
   TransactionReturnData,
   TransactionError,
   SignatureResultCallback,
-  // ClientSubscriptionId,
   Connection as SolanaConnection,
   SystemProgram,
   Blockhash,
@@ -61,13 +60,16 @@ export class BankrunContextWrapper {
     this.provider = new BankrunProvider(context);
     this.connection = new BankrunConnection(
       this.context.banksClient,
-      this.context
+      this.context,
     );
+    this.provider.connection.getSlot = this.connection.getSlot;
+    this.provider.connection.getMultipleAccountsInfoAndContext =
+      this.connection.getMultipleAccountsInfoAndContext;
   }
 
   async sendTransaction(
     tx: Transaction,
-    additionalSigners?: Keypair[]
+    additionalSigners?: Keypair[],
   ): Promise<TransactionSignature> {
     tx.recentBlockhash = (await this.getLatestBlockhash()).toString();
     tx.feePayer = this.context.payer.publicKey;
@@ -84,7 +86,7 @@ export class BankrunContextWrapper {
 
   async fundKeypair(
     keypair: Keypair | Wallet,
-    lamports: number | bigint
+    lamports: number | bigint,
   ): Promise<TransactionSignature> {
     const ixs = [
       SystemProgram.transfer({
@@ -98,9 +100,7 @@ export class BankrunContextWrapper {
   }
 
   async getLatestBlockhash(): Promise<Blockhash> {
-    const blockhash = await this.connection.getLatestBlockhash("finalized");
-
-    return blockhash.blockhash;
+    return (await this.connection.getLatestBlockhash("finalized")).blockhash;
   }
 
   printTxLogs(signature: string): void {
@@ -109,40 +109,39 @@ export class BankrunContextWrapper {
 
   async moveTimeForward(increment: number): Promise<void> {
     const currentClock = await this.context.banksClient.getClock();
-    const newUnixTimestamp = currentClock.unixTimestamp + BigInt(increment);
-    const newClock = new Clock(
-      currentClock.slot,
-      currentClock.epochStartTimestamp,
-      currentClock.epoch,
-      currentClock.leaderScheduleEpoch,
-      newUnixTimestamp
+    await this.context.setClock(
+      new Clock(
+        currentClock.slot,
+        currentClock.epochStartTimestamp,
+        currentClock.epoch,
+        currentClock.leaderScheduleEpoch,
+        currentClock.unixTimestamp + BigInt(increment),
+      ),
     );
-    await this.context.setClock(newClock);
   }
 
-  async setTimestamp(unix_timestamp: number): Promise<void> {
+  async setTimestamp(unixTimestamp: number): Promise<void> {
     const currentClock = await this.context.banksClient.getClock();
-    const newUnixTimestamp = BigInt(unix_timestamp);
-    const newClock = new Clock(
-      currentClock.slot,
-      currentClock.epochStartTimestamp,
-      currentClock.epoch,
-      currentClock.leaderScheduleEpoch,
-      newUnixTimestamp
+    await this.context.setClock(
+      new Clock(
+        currentClock.slot,
+        currentClock.epochStartTimestamp,
+        currentClock.epoch,
+        currentClock.leaderScheduleEpoch,
+        BigInt(unixTimestamp),
+      ),
     );
-    await this.context.setClock(newClock);
   }
 }
 
 export class BankrunConnection {
-  private readonly _banksClient: BanksClient;
+  private readonly banksClient: BanksClient;
   private readonly context: ProgramTestContext;
   private transactionToMeta: Map<
     TransactionSignature,
     BanksTransactionResultWithMeta
   > = new Map();
   private clock: Clock;
-
   private nextClientSubscriptionId = 0;
   private onLogCallbacks = new Map<number, LogsCallback>();
   private onAccountChangeCallbacks = new Map<
@@ -151,12 +150,12 @@ export class BankrunConnection {
   >();
 
   constructor(banksClient: BanksClient, context: ProgramTestContext) {
-    this._banksClient = banksClient;
+    this.banksClient = banksClient;
     this.context = context;
   }
 
-  getSlot(): Promise<bigint> {
-    return this._banksClient.getSlot();
+  async getSlot(): Promise<number> {
+    return Number(await this.banksClient.getSlot("finalized"));
   }
 
   toConnection(): SolanaConnection {
@@ -170,7 +169,7 @@ export class BankrunConnection {
 
   async getMultipleAccountsInfo(
     publicKeys: PublicKey[],
-    _commitmentOrConfig?: Commitment
+    _commitmentOrConfig?: Commitment,
   ): Promise<AccountInfo<Buffer>[]> {
     const accountInfos = [];
 
@@ -182,8 +181,25 @@ export class BankrunConnection {
     return accountInfos;
   }
 
+  async getMultipleAccountsInfoAndContext(
+    publicKeys: PublicKey[],
+    _commitmentOrConfig?: Commitment,
+  ): Promise<RpcResponseAndContext<(AccountInfo<Buffer> | null)[]>> {
+    const accountInfosAndContext = [];
+
+    for (const publicKey of publicKeys) {
+      const accountInfo = await this.getAccountInfo(publicKey);
+      accountInfosAndContext.push(accountInfo);
+    }
+
+    return {
+      context: { slot: await this.getSlot() },
+      value: accountInfosAndContext,
+    };
+  }
+
   async getAccountInfo(
-    publicKey: PublicKey
+    publicKey: PublicKey,
   ): Promise<null | AccountInfo<Buffer>> {
     const parsedAccountInfo = await this.getParsedAccountInfo(publicKey);
     return parsedAccountInfo ? parsedAccountInfo.value : null;
@@ -191,14 +207,14 @@ export class BankrunConnection {
 
   async getAccountInfoAndContext(
     publicKey: PublicKey,
-    _commitment?: Commitment
+    _commitment?: Commitment,
   ): Promise<RpcResponseAndContext<null | AccountInfo<Buffer>>> {
     return await this.getParsedAccountInfo(publicKey);
   }
+
   async sendRawTransaction(
     rawTransaction: Buffer | Uint8Array | Array<number>,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    _options?: any
+    _options?: any,
   ): Promise<TransactionSignature> {
     const tx = Transaction.from(rawTransaction);
     const signature = await this.sendTransaction(tx);
@@ -206,9 +222,8 @@ export class BankrunConnection {
   }
 
   async sendTransaction(tx: Transaction): Promise<TransactionSignature> {
-    const banksTransactionMeta = await this._banksClient.tryProcessTransaction(
-      tx
-    );
+    const banksTransactionMeta =
+      await this.banksClient.tryProcessTransaction(tx);
     if (banksTransactionMeta.result) {
       throw new Error(banksTransactionMeta.result);
     }
@@ -240,6 +255,7 @@ export class BankrunConnection {
         err: transaction.meta.err,
         signature,
       };
+
       for (const logCallback of this.onLogCallbacks.values()) {
         logCallback(logs, context);
       }
@@ -258,15 +274,15 @@ export class BankrunConnection {
 
   private async updateSlotAndClock() {
     const currentSlot = await this.getSlot();
-    const nextSlot = currentSlot + BigInt(1);
+    const nextSlot = BigInt(currentSlot + 1);
     this.context.warpToSlot(nextSlot);
-    const currentClock = await this._banksClient.getClock();
+    const currentClock = await this.banksClient.getClock();
     const newClock = new Clock(
       nextSlot,
       currentClock.epochStartTimestamp,
       currentClock.epoch,
       currentClock.leaderScheduleEpoch,
-      currentClock.unixTimestamp + BigInt(1)
+      currentClock.unixTimestamp + BigInt(1),
     );
     this.context.setClock(newClock);
     this.clock = newClock;
@@ -277,19 +293,19 @@ export class BankrunConnection {
   }
 
   async getParsedAccountInfo(
-    publicKey: PublicKey
+    publicKey: PublicKey,
   ): Promise<RpcResponseAndContext<AccountInfo<Buffer>>> {
-    const accountInfoBytes = await this._banksClient.getAccount(publicKey);
+    const accountInfoBytes = await this.banksClient.getAccount(publicKey);
     if (accountInfoBytes === null) {
       return {
-        context: { slot: Number(await this._banksClient.getSlot()) },
+        context: { slot: Number(await this.banksClient.getSlot()) },
         value: null,
       };
     }
     accountInfoBytes.data = Buffer.from(accountInfoBytes.data);
     const accountInfoBuffer = accountInfoBytes as AccountInfo<Buffer>;
     return {
-      context: { slot: Number(await this._banksClient.getSlot()) },
+      context: { slot: Number(await this.banksClient.getSlot()) },
       value: accountInfoBuffer,
     };
   }
@@ -300,9 +316,8 @@ export class BankrunConnection {
       lastValidBlockHeight: number;
     }>
   > {
-    const blockhashAndBlockheight = await this._banksClient.getLatestBlockhash(
-      commitment
-    );
+    const blockhashAndBlockheight =
+      await this.banksClient.getLatestBlockhash(commitment);
     return {
       blockhash: blockhashAndBlockheight[0],
       lastValidBlockHeight: Number(blockhashAndBlockheight[1]),
@@ -311,19 +326,20 @@ export class BankrunConnection {
 
   async getSignatureStatus(
     signature: string,
-    _config?: SignatureStatusConfig
+    _config?: SignatureStatusConfig,
   ): Promise<RpcResponseAndContext<null | SignatureStatus>> {
-    const transactionStatus = await this._banksClient.getTransactionStatus(
-      signature
-    );
+    const transactionStatus =
+      await this.banksClient.getTransactionStatus(signature);
+
     if (transactionStatus === null) {
       return {
-        context: { slot: Number(await this._banksClient.getSlot()) },
+        context: { slot: Number(await this.banksClient.getSlot()) },
         value: null,
       };
     }
+
     return {
-      context: { slot: Number(await this._banksClient.getSlot()) },
+      context: { slot: Number(await this.banksClient.getSlot()) },
       value: {
         slot: Number(transactionStatus.slot),
         confirmations: Number(transactionStatus.confirmations),
@@ -339,21 +355,23 @@ export class BankrunConnection {
    */
   async getTransaction(
     signature: string,
-    _rawConfig?: GetTransactionConfig | GetVersionedTransactionConfig
+    _rawConfig?: GetTransactionConfig | GetVersionedTransactionConfig,
   ): Promise<BankrunTransactionResponse | null> {
     const txMeta = this.transactionToMeta.get(
-      signature as TransactionSignature
+      signature as TransactionSignature,
     );
+
     if (txMeta === undefined) {
       return null;
     }
-    const transactionStatus = await this._banksClient.getTransactionStatus(
-      signature
-    );
+
+    const transactionStatus =
+      await this.banksClient.getTransactionStatus(signature);
     const meta: BankrunTransactionMetaNormalized = {
       logMessages: txMeta.meta.logMessages,
       err: txMeta.result,
     };
+
     return {
       slot: Number(transactionStatus.slot),
       meta,
@@ -362,42 +380,46 @@ export class BankrunConnection {
 
   findComputeUnitConsumption(signature: string): bigint {
     const txMeta = this.transactionToMeta.get(
-      signature as TransactionSignature
+      signature as TransactionSignature,
     );
+
     if (txMeta === undefined) {
       throw new Error("Transaction not found");
     }
+
     return txMeta.meta.computeUnitsConsumed;
   }
 
   printTxLogs(signature: string): void {
     const txMeta = this.transactionToMeta.get(
-      signature as TransactionSignature
+      signature as TransactionSignature,
     );
+
     if (txMeta === undefined) {
       throw new Error("Transaction not found");
     }
+
     console.log(txMeta.meta.logMessages);
   }
 
   async simulateTransaction(
     transaction: Transaction | VersionedTransaction,
-    _config?: SimulateTransactionConfig
+    _config?: SimulateTransactionConfig,
   ): Promise<RpcResponseAndContext<SimulatedTransactionResponse>> {
-    const simulationResult = await this._banksClient.simulateTransaction(
-      transaction
-    );
+    const simulationResult =
+      await this.banksClient.simulateTransaction(transaction);
     const returnDataProgramId =
       simulationResult.meta?.returnData?.programId.toBase58();
     const returnDataNormalized = Buffer.from(
-      simulationResult.meta?.returnData?.data
+      simulationResult.meta?.returnData?.data,
     ).toString("base64");
     const returnData: TransactionReturnData = {
       programId: returnDataProgramId,
       data: [returnDataNormalized, "base64"],
     };
+
     return {
-      context: { slot: Number(await this._banksClient.getSlot()) },
+      context: { slot: Number(await this.banksClient.getSlot()) },
       value: {
         err: simulationResult.result,
         logs: simulationResult.meta.logMessages,
@@ -411,16 +433,17 @@ export class BankrunConnection {
   onSignature(
     signature: string,
     callback: SignatureResultCallback,
-    commitment?: Commitment
+    commitment?: Commitment,
   ): number {
     const txMeta = this.transactionToMeta.get(
-      signature as TransactionSignature
+      signature as TransactionSignature,
     );
-    this._banksClient.getSlot(commitment).then((slot) => {
+    this.banksClient.getSlot(commitment).then((slot) => {
       if (txMeta) {
         callback({ err: txMeta.result }, { slot: Number(slot) });
       }
     });
+
     return 0;
   }
 
@@ -430,9 +453,9 @@ export class BankrunConnection {
   }
 
   onLogs(
-    filter: LogsFilter,
+    _filter: LogsFilter,
     callback: LogsCallback,
-    _commitment?: Commitment
+    _commitment?: Commitment,
   ): number {
     const subscriptId = this.nextClientSubscriptionId;
 
@@ -450,8 +473,7 @@ export class BankrunConnection {
   onAccountChange(
     publicKey: PublicKey,
     callback: AccountChangeCallback,
-    // @ts-ignore
-    _commitment?: Commitment
+    _commitment?: Commitment,
   ): number {
     const subscriptId = this.nextClientSubscriptionId;
 
@@ -463,7 +485,7 @@ export class BankrunConnection {
   }
 
   async removeAccountChangeListener(
-    clientSubscriptionId: number
+    clientSubscriptionId: number,
   ): Promise<void> {
     this.onAccountChangeCallbacks.delete(clientSubscriptionId);
   }

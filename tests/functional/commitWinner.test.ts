@@ -2,16 +2,17 @@ import { BankrunProvider } from "anchor-bankrun";
 import { beforeEach, describe, expect, test } from "bun:test";
 import { Clock, ProgramTestContext } from "solana-bankrun";
 import { Lottery } from "../../target/types/lottery";
-import { BN, Idl, Program } from "@coral-xyz/anchor";
+import { BN, Program } from "@coral-xyz/anchor";
 import { Keypair, LAMPORTS_PER_SOL, SystemProgram } from "@solana/web3.js";
 import { getBankrunSetup } from "../setup";
 import { TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { getCollectionMintPdaAndBump, getLotteryPdaAndBump } from "../pda";
 import { getLotteryAcc } from "../accounts";
-import { SbOnDemand } from "../fixtures/sd_on_demand";
-import { Queue, Randomness } from "@switchboard-xyz/on-demand";
+import { SbOnDemand } from "../fixtures/sb_on_demand";
+import { Queue } from "@switchboard-xyz/on-demand";
+import { createAndCommitIxs } from "../switchboard";
 
-describe("commitWInner", () => {
+describe("commitWinner", () => {
   let { context, provider, program, sbProgram, queue } = {} as {
     context: ProgramTestContext;
     provider: BankrunProvider;
@@ -42,7 +43,7 @@ describe("commitWInner", () => {
             executable: false,
           },
         };
-      })
+      }),
     ));
 
     const { unixTimestamp } = await context.banksClient.getClock();
@@ -76,7 +77,7 @@ describe("commitWInner", () => {
       epochStartTimestamp,
       epoch,
       leaderScheduleEpoch,
-      newTime
+      newTime,
     );
     context.setClock(clock);
 
@@ -91,18 +92,19 @@ describe("commitWInner", () => {
       .rpc();
   });
 
-  test.skip("commit a winner", async () => {
-    // TODO: getSlot is under provider.connection.banksClient.getSlot, not provider.connection.getSlot
-    const [randomness, rngKp, ixs] = await Randomness.createAndCommitIxs(
-      sbProgram as Program<Idl>,
-      queue.pubkey
+  test("commit a winner", async () => {
+    const { rngKp, ixs } = await createAndCommitIxs(
+      sbProgram,
+      queue.pubkey,
+      authority.publicKey,
     );
 
     await program.methods
       .commitWinner()
       .accountsPartial({
+        authority: authority.publicKey,
         lottery: lotteryPda,
-        randomnessAccountData: randomness.pubkey,
+        randomnessAccountData: rngKp.publicKey,
         tokenProgram,
       })
       .preInstructions(ixs)
@@ -111,6 +113,6 @@ describe("commitWInner", () => {
 
     const lotteryAcc = await getLotteryAcc(program, lotteryPda);
 
-    expect(lotteryAcc.randomnessAccountData).toStrictEqual(randomness.pubkey);
+    expect(lotteryAcc.randomnessAccountData).toStrictEqual(rngKp.publicKey);
   });
 });
