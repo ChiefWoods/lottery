@@ -4,11 +4,12 @@ import { Clock, ProgramTestContext } from "solana-bankrun";
 import { Lottery } from "../../target/types/lottery";
 import { AnchorError, BN, Idl, Program } from "@coral-xyz/anchor";
 import {
+  clusterApiUrl,
+  Connection,
   Keypair,
   LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
-  TransactionInstruction,
 } from "@solana/web3.js";
 import { getBankrunSetup } from "../setup";
 import { TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
@@ -16,6 +17,7 @@ import { getCollectionMintPdaAndBump, getLotteryPdaAndBump } from "../pda";
 import { getLotteryAcc } from "../accounts";
 import { SbOnDemand } from "../fixtures/sb_on_demand";
 import { Queue, Randomness } from "@switchboard-xyz/on-demand";
+import { createAndCommitIxs, getRandomnessRevealIx } from "../switchboard";
 
 describe("choose a winner", () => {
   let { context, provider, program, sbProgram, queue } = {} as {
@@ -36,8 +38,8 @@ describe("choose a winner", () => {
   let startTime: BN;
   let endTime: BN;
   let randomness: Randomness;
-  let rngKp: Keypair;
-  let ixs: TransactionInstruction[];
+  // let rngKp: Keypair;
+  // let ixs: TransactionInstruction[];
 
   beforeEach(async () => {
     ({ context, provider, program, sbProgram, queue } = await getBankrunSetup(
@@ -99,11 +101,10 @@ describe("choose a winner", () => {
       .signers([buyer])
       .rpc();
 
-    // TODO: test commitWinner
-
-    [randomness, rngKp, ixs] = await Randomness.createAndCommitIxs(
-      sbProgram as unknown as Program<Idl>,
+    const { rngKp, ixs } = await createAndCommitIxs(
+      sbProgram,
       queue.pubkey,
+      authority.publicKey,
     );
 
     await program.methods
@@ -111,17 +112,25 @@ describe("choose a winner", () => {
       .accountsPartial({
         authority: authority.publicKey,
         lottery: lotteryPda,
-        randomnessAccountData: randomness.pubkey,
+        randomnessAccountData: rngKp.publicKey,
         tokenProgram,
       })
       .preInstructions(ixs)
       .signers([authority, rngKp])
       .rpc();
+
+    // @ts-ignore
+    randomness = new Randomness(sbProgram, rngKp.publicKey);
   });
 
-  test.skip("choose a winner", async () => {
-    const { epoch, epochStartTimestamp, leaderScheduleEpoch, slot } =
-      await context.banksClient.getClock();
+  test("choose a winner", async () => {
+    const {
+      epoch,
+      epochStartTimestamp,
+      leaderScheduleEpoch,
+      slot,
+      unixTimestamp,
+    } = await context.banksClient.getClock();
 
     const newTime = BigInt(endTime.toNumber());
     const clock = new Clock(
@@ -133,7 +142,14 @@ describe("choose a winner", () => {
     );
     context.setClock(clock);
 
-    const ix = await randomness.revealIx();
+    // TODO: randomness is fetched from devnet cluster, which is outside of Bankrun
+
+    const ix = await getRandomnessRevealIx(
+      sbProgram,
+      randomness,
+      Number(unixTimestamp),
+      authority.publicKey,
+    );
 
     await program.methods
       .chooseWinner()
