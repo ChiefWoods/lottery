@@ -43,7 +43,7 @@ pub struct InitializeLottery<'info> {
         mint::decimals = 0,
         mint::freeze_authority = collection_mint,
         mint::token_program = token_program,
-        seeds = [COLLECTION_MINT_SEED],
+        seeds = [COLLECTION_MINT_SEED, authority.key().as_ref()],
         bump,
     )]
     pub collection_mint: Box<InterfaceAccount<'info, Mint>>,
@@ -83,6 +83,8 @@ impl InitializeLottery<'_> {
         ctx: Context<InitializeLottery>,
         args: InitializeLotteryArgs,
     ) -> Result<()> {
+        let authority_key = ctx.accounts.authority.key();
+
         ctx.accounts.lottery.set_inner(Lottery {
             winner_chosen: false,
             bump: ctx.bumps.lottery,
@@ -93,12 +95,16 @@ impl InitializeLottery<'_> {
             winning_index: 0,
             price: args.price,
             pot_amount: 0,
-            authority: ctx.accounts.authority.key(),
-            randomness_account_data: Pubkey::default(),
+            authority: authority_key,
+            randomness: Pubkey::default(),
             collection_mint: ctx.accounts.collection_mint.key(),
         });
 
-        let signers_seeds: &[&[&[u8]]] = &[&[COLLECTION_MINT_SEED, &[ctx.bumps.collection_mint]]];
+        let signers_seeds: &[&[&[u8]]] = &[&[
+            COLLECTION_MINT_SEED,
+            authority_key.as_ref(),
+            &[ctx.bumps.collection_mint],
+        ]];
 
         mint_to(
             CpiContext::new_with_signer(

@@ -15,7 +15,7 @@ use anchor_spl::{
 };
 
 use crate::{
-    error::LotteryError, Lottery, COLLECTION_MINT_SEED, EDITION_SEED, LOTTERY_SEED, METADATA_SEED,
+    error::LotteryError, Lottery, COLLECTION_MINT_SEED, EDITION_SEED, METADATA_SEED,
     TICKET_MINT_SEED,
 };
 
@@ -25,8 +25,6 @@ pub struct BuyTicket<'info> {
     pub buyer: Signer<'info>,
     #[account(
         mut,
-        seeds = [LOTTERY_SEED, lottery.collection_mint.key().as_ref()],
-        bump = lottery.bump,
         has_one = collection_mint,
     )]
     pub lottery: Box<Account<'info, Lottery>>,
@@ -37,15 +35,13 @@ pub struct BuyTicket<'info> {
         mint::decimals = 0,
         mint::freeze_authority = collection_mint,
         mint::token_program = token_program,
-        seeds = [TICKET_MINT_SEED, lottery.index.to_le_bytes().as_ref()],
+        seeds = [TICKET_MINT_SEED, lottery.key().as_ref(), lottery.index.to_le_bytes().as_ref()],
         bump,
     )]
     pub ticket_mint: InterfaceAccount<'info, Mint>,
     #[account(
         mut,
         mint::token_program = token_program,
-        seeds = [COLLECTION_MINT_SEED],
-        bump = lottery.collection_mint_bump,
     )]
     pub collection_mint: Box<InterfaceAccount<'info, Mint>>,
     #[account(
@@ -126,16 +122,18 @@ impl BuyTicket<'_> {
             .checked_add(ctx.accounts.lottery.price)
             .unwrap();
 
-        ctx.accounts.lottery.index += 1;
-
         let ticket_name = format!(
             "{} #{}",
             ctx.accounts.collection_metadata.name.replace("\u{0}", ""),
             ctx.accounts.lottery.index
         );
 
+        ctx.accounts.lottery.index += 1;
+
+        let authority_key = ctx.accounts.lottery.authority.key();
         let signers_seeds: &[&[&[u8]]] = &[&[
             COLLECTION_MINT_SEED,
+            authority_key.as_ref(),
             &[ctx.accounts.lottery.collection_mint_bump],
         ]];
 

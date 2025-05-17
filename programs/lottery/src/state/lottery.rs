@@ -13,6 +13,6 @@ pub struct Lottery {
     pub price: u64,
     pub pot_amount: u64,
     pub authority: Pubkey,
-    pub randomness_account_data: Pubkey,
+    pub randomness: Pubkey,
     pub collection_mint: Pubkey,
 }

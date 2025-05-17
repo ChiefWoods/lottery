@@ -4,7 +4,7 @@ use anchor_spl::{
     token_interface::{Mint, TokenAccount, TokenInterface},
 };
 
-use crate::{error::LotteryError, Lottery, LOTTERY_SEED, METADATA_SEED, TICKET_MINT_SEED};
+use crate::{error::LotteryError, Lottery, METADATA_SEED, TICKET_MINT_SEED};
 
 #[derive(Accounts)]
 pub struct ClaimPrize<'info> {
@@ -12,14 +12,12 @@ pub struct ClaimPrize<'info> {
     pub winner: Signer<'info>,
     #[account(
         mut,
-        seeds = [LOTTERY_SEED, lottery.collection_mint.key().as_ref()],
-        bump = lottery.bump,
         has_one = collection_mint,
     )]
     pub lottery: Account<'info, Lottery>,
     #[account(
         mint::token_program = token_program,
-        seeds = [TICKET_MINT_SEED, lottery.winning_index.to_le_bytes().as_ref()],
+        seeds = [TICKET_MINT_SEED, lottery.key().as_ref(), lottery.winning_index.to_le_bytes().as_ref()],
         bump,
     )]
     pub ticket_mint: InterfaceAccount<'info, Mint>,
