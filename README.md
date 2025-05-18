@@ -16,10 +16,9 @@ Ticket lottery for [Turbin3 Builders Cohort](https://turbin3.com/).
 - [@coral-xyz/anchor](https://www.anchor-lang.com/)
 - [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/)
 - [@solana/spl-token](https://solana-labs.github.io/solana-program-library/token/js/)
-- [solana-bankrun](https://kevinheavey.github.io/solana-bankrun/)
-- [anchor-bankrun](https://kevinheavey.github.io/solana-bankrun/)
+- [@metaplex-foundation/umi](https://developers.metaplex.com/umi)
 - [@metaplex-foundation/mpl-token-metadata](https://developers.metaplex.com/token-metadata)
-- [@switchboard-xyz/on-demand](https://switchboard-docs.web.app/)
+- [@switchboard-xyz/on-demand](https://docs.switchboard.xyz/)
 
 ### Crates
 
@@ -35,12 +34,12 @@ Ticket lottery for [Turbin3 Builders Cohort](https://turbin3.com/).
 
 ### Prerequisites
 
-1. Update your Solana CLI, Bun toolkit and avm to the latest version
+1. Update your Solana CLI, Bun toolkit and avm
 
 ```bash
-solana-install update
+agave-install init 2.1.20
 bun upgrade
-avm update
+avm init 0.31.1
 ```
 
 ### Setup
@@ -69,32 +68,32 @@ anchor keys sync
 anchor build
 ```
 
-#### Testing
-
-Run all `.test.ts` files under `/tests`.
-
-```bash
-bun test
-```
-
 #### Deployment
 
-1. Configure to use localnet
+1. Deploy the program
 
 ```bash
-solana config set -ul
+anchor deploy --provider.cluster d
 ```
 
-2. Deploy the program
+2. Optionally initialize IDL
 
 ```bash
-anchor deploy
+anchor idl init -f target/idl/lottery.json <PROGRAM_ID> --provider.cluster d
 ```
 
-3. Optionally initialize IDL
+#### Testing
+
+1. Set up `.env` values. Use a wallet that's funded in devnet with at least 1 SOL. This wallet is used to fund keypairs when running a new test suite.
 
 ```bash
-anchor idl init -f target/idl/lottery.json <PROGRAM_ID>
+cp .env.example .env
+```
+
+2. Run all `.test.ts` files under `/tests`. A max buffer of 2 mins is allowed for the tests to run due to the asynchronous state of devnet testing.
+
+```bash
+bun run test
 ```
 
 ## Issues
