@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/sb_on_demand.json`.
  */
 export type SbOnDemand = {
-  address: "SBondMDrcV3K4kxZR1HNVT7osZxAHVHgYXL5Ze1oMUv";
+  address: "Aio4gaXjXzJNVLtzwtNVmSqGKpANtXhybbkhtAC94ji2";
   metadata: {
     name: "sbOnDemand";
     version: "0.1.0";
@@ -183,16 +183,12 @@ export type SbOnDemand = {
         },
         {
           name: "stakeProgram";
-          address: "SBSTk6t52R89MmCdD739Rdd97HdbTQUFHe41vCX7pTt";
-          relations: ["programState"];
         },
         {
           name: "delegationPool";
-          writable: true;
         },
         {
           name: "delegationGroup";
-          writable: true;
         },
       ];
       args: [
@@ -201,6 +197,59 @@ export type SbOnDemand = {
           type: {
             defined: {
               name: "oracleHeartbeatParams";
+            };
+          };
+        },
+      ];
+    },
+    {
+      name: "oracleHeartbeatV2";
+      discriminator: [122, 231, 66, 32, 226, 62, 144, 103];
+      accounts: [
+        {
+          name: "oracle";
+          writable: true;
+        },
+        {
+          name: "oracleStats";
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: "const";
+                value: [79, 114, 97, 99, 108, 101, 83, 116, 97, 116, 115];
+              },
+              {
+                kind: "account";
+                path: "oracle";
+              },
+            ];
+          };
+        },
+        {
+          name: "oracleSigner";
+          signer: true;
+        },
+        {
+          name: "queue";
+          writable: true;
+          relations: ["oracle", "gcNode"];
+        },
+        {
+          name: "gcNode";
+          writable: true;
+        },
+        {
+          name: "programState";
+          writable: true;
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "oracleHeartbeatV2Params";
             };
           };
         },
@@ -258,14 +307,6 @@ export type SbOnDemand = {
         {
           name: "addressLookupTableProgram";
           address: "AddressLookupTab1e1111111111111111111111111";
-        },
-        {
-          name: "stakeProgram";
-          relations: ["programState"];
-        },
-        {
-          name: "stakePool";
-          relations: ["programState"];
         },
       ];
       args: [
@@ -347,12 +388,6 @@ export type SbOnDemand = {
           name: "addressLookupTableProgram";
           address: "AddressLookupTab1e1111111111111111111111111";
         },
-        {
-          name: "stakeProgram";
-        },
-        {
-          name: "stakePool";
-        },
       ];
       args: [
         {
@@ -360,6 +395,54 @@ export type SbOnDemand = {
           type: {
             defined: {
               name: "oracleInitSvmParams";
+            };
+          };
+        },
+      ];
+    },
+    {
+      name: "oracleResetLut";
+      discriminator: [147, 244, 108, 198, 152, 219, 0, 22];
+      accounts: [
+        {
+          name: "oracle";
+          writable: true;
+        },
+        {
+          name: "authority";
+          signer: true;
+          relations: ["oracle"];
+        },
+        {
+          name: "payer";
+          writable: true;
+          signer: true;
+        },
+        {
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        },
+        {
+          name: "programState";
+        },
+        {
+          name: "lutSigner";
+        },
+        {
+          name: "lut";
+          writable: true;
+        },
+        {
+          name: "addressLookupTableProgram";
+          address: "AddressLookupTab1e1111111111111111111111111";
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "oracleResetLutParams";
             };
           };
         },
@@ -390,56 +473,70 @@ export type SbOnDemand = {
       ];
     },
     {
-      name: "oracleUpdateDelegation";
-      discriminator: [46, 198, 113, 223, 160, 189, 118, 90];
+      name: "oracleSetOperator";
+      discriminator: [210, 232, 155, 124, 69, 176, 242, 133];
       accounts: [
         {
           name: "oracle";
           writable: true;
         },
         {
-          name: "oracleStats";
-          pda: {
-            seeds: [
-              {
-                kind: "const";
-                value: [79, 114, 97, 99, 108, 101, 83, 116, 97, 116, 115];
-              },
-              {
-                kind: "account";
-                path: "oracle";
-              },
-            ];
+          name: "authority";
+          signer: true;
+          relations: ["oracle"];
+        },
+        {
+          name: "operator";
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "oracleSetOperatorParams";
+            };
           };
+        },
+      ];
+    },
+    {
+      name: "oracleSyncLut";
+      discriminator: [138, 99, 12, 59, 18, 170, 171, 45];
+      accounts: [
+        {
+          name: "oracle";
         },
         {
           name: "queue";
           relations: ["oracle"];
         },
         {
+          name: "ncn";
+        },
+        {
+          name: "vault";
+        },
+        {
+          name: "state";
+        },
+        {
           name: "authority";
           signer: true;
+          relations: ["oracle"];
         },
         {
-          name: "programState";
-          writable: true;
+          name: "operator";
+          relations: ["oracle"];
         },
         {
-          name: "payer";
-          writable: true;
-          signer: true;
+          name: "ncnOperatorState";
         },
         {
-          name: "systemProgram";
-          address: "11111111111111111111111111111111";
+          name: "operatorVaultTicket";
         },
         {
-          name: "tokenProgram";
-          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
-        },
-        {
-          name: "delegationPool";
-          writable: true;
+          name: "vaultOperatorDelegation";
         },
         {
           name: "lutSigner";
@@ -453,29 +550,12 @@ export type SbOnDemand = {
           address: "AddressLookupTab1e1111111111111111111111111";
         },
         {
-          name: "switchMint";
+          name: "payer";
+          signer: true;
         },
         {
-          name: "nativeMint";
-          address: "So11111111111111111111111111111111111111112";
-        },
-        {
-          name: "wsolVault";
-          writable: true;
-        },
-        {
-          name: "switchVault";
-          writable: true;
-        },
-        {
-          name: "stakeProgram";
-          relations: ["programState"];
-        },
-        {
-          name: "stakePool";
-        },
-        {
-          name: "delegationGroup";
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
         },
       ];
       args: [
@@ -483,7 +563,7 @@ export type SbOnDemand = {
           name: "params";
           type: {
             defined: {
-              name: "oracleUpdateDelegationParams";
+              name: "oracleSyncLutParams";
             };
           };
         },
@@ -797,6 +877,87 @@ export type SbOnDemand = {
           type: {
             defined: {
               name: "pullFeedSubmitResponseParams";
+            };
+          };
+        },
+      ];
+    },
+    {
+      name: "pullFeedSubmitResponseConsensus";
+      discriminator: [239, 124, 39, 184, 147, 222, 16, 248];
+      accounts: [
+        {
+          name: "queue";
+        },
+        {
+          name: "programState";
+        },
+        {
+          name: "recentSlothashes";
+          address: "SysvarS1otHashes111111111111111111111111111";
+        },
+        {
+          name: "payer";
+          writable: true;
+          signer: true;
+        },
+        {
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        },
+        {
+          name: "rewardVault";
+          writable: true;
+        },
+        {
+          name: "tokenProgram";
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+        },
+        {
+          name: "tokenMint";
+          address: "So11111111111111111111111111111111111111112";
+        },
+        {
+          name: "ixSysvar";
+          address: "Sysvar1nstructions1111111111111111111111111";
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "pullFeedSubmitResponseConsensusParams";
+            };
+          };
+        },
+      ];
+    },
+    {
+      name: "pullFeedSubmitResponseConsensusLight";
+      discriminator: [178, 179, 88, 144, 175, 130, 157, 87];
+      accounts: [
+        {
+          name: "queue";
+        },
+        {
+          name: "programState";
+        },
+        {
+          name: "recentSlothashes";
+          address: "SysvarS1otHashes111111111111111111111111111";
+        },
+        {
+          name: "ixSysvar";
+          address: "Sysvar1nstructions1111111111111111111111111";
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "pullFeedSubmitResponseConsensusLightParams";
             };
           };
         },
@@ -1154,60 +1315,6 @@ export type SbOnDemand = {
       ];
     },
     {
-      name: "queueInitDelegationGroup";
-      discriminator: [239, 146, 75, 158, 20, 166, 159, 14];
-      accounts: [
-        {
-          name: "queue";
-          writable: true;
-        },
-        {
-          name: "payer";
-          writable: true;
-          signer: true;
-        },
-        {
-          name: "systemProgram";
-          address: "11111111111111111111111111111111";
-        },
-        {
-          name: "programState";
-        },
-        {
-          name: "lutSigner";
-        },
-        {
-          name: "lut";
-          writable: true;
-        },
-        {
-          name: "addressLookupTableProgram";
-          address: "AddressLookupTab1e1111111111111111111111111";
-        },
-        {
-          name: "delegationGroup";
-          writable: true;
-        },
-        {
-          name: "stakeProgram";
-          relations: ["programState"];
-        },
-        {
-          name: "stakePool";
-        },
-      ];
-      args: [
-        {
-          name: "params";
-          type: {
-            defined: {
-              name: "queueInitDelegationGroupParams";
-            };
-          };
-        },
-      ];
-    },
-    {
       name: "queueInitSvm";
       discriminator: [175, 94, 119, 151, 45, 144, 173, 235];
       accounts: [
@@ -1400,6 +1507,380 @@ export type SbOnDemand = {
       ];
     },
     {
+      name: "queuePayRewards";
+      discriminator: [67, 87, 149, 166, 56, 112, 20, 12];
+      accounts: [
+        {
+          name: "queue";
+          writable: true;
+        },
+        {
+          name: "programState";
+        },
+        {
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        },
+        {
+          name: "vault";
+        },
+        {
+          name: "rewardVault";
+          writable: true;
+        },
+        {
+          name: "tokenProgram";
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+        },
+        {
+          name: "associatedTokenProgram";
+          address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
+        },
+        {
+          name: "wsolMint";
+          address: "So11111111111111111111111111111111111111112";
+        },
+        {
+          name: "payer";
+          writable: true;
+          signer: true;
+        },
+        {
+          name: "escrow";
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: "account";
+                path: "payer";
+              },
+              {
+                kind: "const";
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ];
+              },
+              {
+                kind: "account";
+                path: "wsolMint";
+              },
+            ];
+            program: {
+              kind: "const";
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ];
+            };
+          };
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "queuePayRewardsParams";
+            };
+          };
+        },
+      ];
+    },
+    {
+      name: "queuePaySubsidy";
+      discriminator: [85, 84, 51, 251, 144, 57, 105, 200];
+      accounts: [
+        {
+          name: "queue";
+          writable: true;
+        },
+        {
+          name: "programState";
+        },
+        {
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        },
+        {
+          name: "vault";
+        },
+        {
+          name: "rewardVault";
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: "account";
+                path: "vault";
+              },
+              {
+                kind: "const";
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ];
+              },
+              {
+                kind: "account";
+                path: "switchMint";
+              },
+            ];
+            program: {
+              kind: "const";
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ];
+            };
+          };
+        },
+        {
+          name: "subsidyVault";
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: "account";
+                path: "programState";
+              },
+              {
+                kind: "const";
+                value: [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169,
+                ];
+              },
+              {
+                kind: "account";
+                path: "switchMint";
+              },
+            ];
+            program: {
+              kind: "const";
+              value: [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89,
+              ];
+            };
+          };
+        },
+        {
+          name: "tokenProgram";
+          address: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+        },
+        {
+          name: "associatedTokenProgram";
+          address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
+        },
+        {
+          name: "wsolMint";
+          address: "So11111111111111111111111111111111111111112";
+        },
+        {
+          name: "switchMint";
+        },
+        {
+          name: "vaultConfig";
+        },
+        {
+          name: "payer";
+          writable: true;
+          signer: true;
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "queuePaySubsidyParams";
+            };
+          };
+        },
+      ];
+    },
+    {
       name: "queueRemoveMrEnclave";
       discriminator: [3, 64, 135, 33, 190, 133, 68, 252];
       accounts: [
@@ -1430,6 +1911,88 @@ export type SbOnDemand = {
       ];
     },
     {
+      name: "queueResetLut";
+      discriminator: [224, 85, 0, 204, 71, 42, 11, 242];
+      accounts: [
+        {
+          name: "queue";
+          writable: true;
+        },
+        {
+          name: "authority";
+          signer: true;
+          relations: ["queue"];
+        },
+        {
+          name: "payer";
+          writable: true;
+          signer: true;
+        },
+        {
+          name: "systemProgram";
+          address: "11111111111111111111111111111111";
+        },
+        {
+          name: "programState";
+        },
+        {
+          name: "lutSigner";
+        },
+        {
+          name: "lut";
+          writable: true;
+        },
+        {
+          name: "addressLookupTableProgram";
+          address: "AddressLookupTab1e1111111111111111111111111";
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "queueResetLutParams";
+            };
+          };
+        },
+      ];
+    },
+    {
+      name: "queueResetVault";
+      discriminator: [232, 255, 48, 111, 240, 168, 253, 40];
+      accounts: [
+        {
+          name: "queue";
+          writable: true;
+        },
+        {
+          name: "authority";
+          signer: true;
+        },
+        {
+          name: "state";
+        },
+        {
+          name: "ncn";
+          relations: ["queue"];
+        },
+        {
+          name: "vault";
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "queueResetVaultParams";
+            };
+          };
+        },
+      ];
+    },
+    {
       name: "queueSetConfigs";
       discriminator: [54, 183, 243, 199, 49, 103, 142, 48];
       accounts: [
@@ -1451,6 +2014,70 @@ export type SbOnDemand = {
           type: {
             defined: {
               name: "queueSetConfigsParams";
+            };
+          };
+        },
+      ];
+    },
+    {
+      name: "queueSetNcn";
+      discriminator: [232, 223, 179, 12, 20, 136, 181, 219];
+      accounts: [
+        {
+          name: "queue";
+          writable: true;
+        },
+        {
+          name: "authority";
+          signer: true;
+        },
+        {
+          name: "state";
+        },
+        {
+          name: "ncn";
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "queueSetNcnParams";
+            };
+          };
+        },
+      ];
+    },
+    {
+      name: "queueSetVault";
+      discriminator: [48, 47, 102, 99, 241, 249, 196, 246];
+      accounts: [
+        {
+          name: "queue";
+          writable: true;
+        },
+        {
+          name: "authority";
+          signer: true;
+        },
+        {
+          name: "state";
+        },
+        {
+          name: "ncn";
+          relations: ["queue"];
+        },
+        {
+          name: "vault";
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "queueSetVaultParams";
             };
           };
         },
@@ -1821,6 +2448,27 @@ export type SbOnDemand = {
         },
       ];
     },
+    {
+      name: "testUpdateOracleStats";
+      discriminator: [175, 48, 162, 252, 154, 197, 149, 187];
+      accounts: [
+        {
+          name: "oracleStats";
+          docs: ["The OracleStats account to update."];
+          writable: true;
+        },
+      ];
+      args: [
+        {
+          name: "params";
+          type: {
+            defined: {
+              name: "testUpdateOracleStatsParams";
+            };
+          };
+        },
+      ];
+    },
   ];
   accounts: [
     {
@@ -2126,6 +2774,82 @@ export type SbOnDemand = {
     {
       code: 6053;
       name: "guardianReregisterAttempt";
+    },
+    {
+      code: 6054;
+      name: "invalidManySubmissionCount";
+    },
+    {
+      code: 6055;
+      name: "missingSecpIx";
+    },
+    {
+      code: 6056;
+      name: "checksumMismatch";
+    },
+    {
+      code: 6057;
+      name: "invalidSubmissionFeedsCount";
+    },
+    {
+      code: 6058;
+      name: "invalidSecpSignatureOraclesCount";
+    },
+    {
+      code: 6059;
+      name: "invalidEthAddress";
+    },
+    {
+      code: 6060;
+      name: "noLutKeysAdded";
+    },
+    {
+      code: 6061;
+      name: "invalidVaultOperatorDelegation";
+    },
+    {
+      code: 6062;
+      name: "invalidVaultTokenAccount";
+    },
+    {
+      code: 6063;
+      name: "invalidRemainingAccounts";
+    },
+    {
+      code: 6064;
+      name: "subsidiesNotAllowed";
+    },
+    {
+      code: 6065;
+      name: "missingVod";
+    },
+    {
+      code: 6066;
+      name: "invalidVodEpoch";
+    },
+    {
+      code: 6067;
+      name: "invalidOracleSubsidyWallet";
+    },
+    {
+      code: 6068;
+      name: "invalidOperator";
+    },
+    {
+      code: 6069;
+      name: "max128SampleValue";
+    },
+    {
+      code: 6070;
+      name: "rewardAlreadyPaid";
+    },
+    {
+      code: 6071;
+      name: "invalidOracleAuthority";
+    },
+    {
+      code: 6072;
+      name: "invalidRewardVault";
     },
   ];
   types: [
@@ -2510,15 +3234,13 @@ export type SbOnDemand = {
             type: "u64";
           },
           {
-            name: "ebuf4";
-            type: {
-              array: ["u8", 16];
-            };
+            name: "operator";
+            type: "pubkey";
           },
           {
             name: "ebuf3";
             type: {
-              array: ["u8", 32];
+              array: ["u8", 16];
             };
           },
           {
@@ -2554,7 +3276,7 @@ export type SbOnDemand = {
             type: "u64";
           },
           {
-            name: "slotEnd";
+            name: "reserved";
             type: "u64";
           },
           {
@@ -2590,6 +3312,22 @@ export type SbOnDemand = {
     },
     {
       name: "oracleHeartbeatParams";
+      type: {
+        kind: "struct";
+        fields: [
+          {
+            name: "gatewayUri";
+            type: {
+              option: {
+                array: ["u8", 64];
+              };
+            };
+          },
+        ];
+      };
+    },
+    {
+      name: "oracleHeartbeatV2Params";
       type: {
         kind: "struct";
         fields: [
@@ -2721,6 +3459,18 @@ export type SbOnDemand = {
       };
     },
     {
+      name: "oracleResetLutParams";
+      type: {
+        kind: "struct";
+        fields: [
+          {
+            name: "recentSlot";
+            type: "u64";
+          },
+        ];
+      };
+    },
+    {
       name: "oracleSetConfigsParams";
       type: {
         kind: "struct";
@@ -2740,6 +3490,13 @@ export type SbOnDemand = {
             };
           },
         ];
+      };
+    },
+    {
+      name: "oracleSetOperatorParams";
+      type: {
+        kind: "struct";
+        fields: [];
       };
     },
     {
@@ -2848,15 +3605,10 @@ export type SbOnDemand = {
       };
     },
     {
-      name: "oracleUpdateDelegationParams";
+      name: "oracleSyncLutParams";
       type: {
         kind: "struct";
-        fields: [
-          {
-            name: "reserved1";
-            type: "u64";
-          },
-        ];
+        fields: [];
       };
     },
     {
@@ -3036,9 +3788,9 @@ export type SbOnDemand = {
             };
           },
           {
-            name: "ebuf2";
+            name: "submissionTimestamps";
             type: {
-              array: ["u8", 256];
+              array: ["i64", 32];
             };
           },
         ];
@@ -3182,6 +3934,42 @@ export type SbOnDemand = {
             name: "permitWriteByAuthority";
             type: {
               option: "bool";
+            };
+          },
+        ];
+      };
+    },
+    {
+      name: "pullFeedSubmitResponseConsensusLightParams";
+      type: {
+        kind: "struct";
+        fields: [
+          {
+            name: "slot";
+            type: "u64";
+          },
+          {
+            name: "values";
+            type: {
+              vec: "i128";
+            };
+          },
+        ];
+      };
+    },
+    {
+      name: "pullFeedSubmitResponseConsensusParams";
+      type: {
+        kind: "struct";
+        fields: [
+          {
+            name: "slot";
+            type: "u64";
+          },
+          {
+            name: "values";
+            type: {
+              vec: "i128";
             };
           },
         ];
@@ -3431,27 +4219,39 @@ export type SbOnDemand = {
           },
           {
             name: "ebuf6";
-            docs: ["Reserved."];
             type: {
-              array: ["u8", 23];
+              array: ["u8", 15];
             };
           },
           {
-            name: "ebuf5";
+            name: "ncn";
+            type: "pubkey";
+          },
+          {
+            name: "resrved";
+            type: "u64";
+          },
+          {
+            name: "vaults";
             type: {
-              array: ["u8", 32];
+              array: [
+                {
+                  defined: {
+                    name: "vaultInfo";
+                  };
+                },
+                4,
+              ];
             };
+          },
+          {
+            name: "lastRewardEpoch";
+            type: "u64";
           },
           {
             name: "ebuf4";
             type: {
-              array: ["u8", 64];
-            };
-          },
-          {
-            name: "ebuf3";
-            type: {
-              array: ["u8", 128];
+              array: ["u8", 32];
             };
           },
           {
@@ -3463,7 +4263,7 @@ export type SbOnDemand = {
           {
             name: "ebuf1";
             type: {
-              array: ["u8", 512];
+              array: ["u8", 504];
             };
           },
         ];
@@ -3523,13 +4323,6 @@ export type SbOnDemand = {
             type: "u32";
           },
         ];
-      };
-    },
-    {
-      name: "queueInitDelegationGroupParams";
-      type: {
-        kind: "struct";
-        fields: [];
       };
     },
     {
@@ -3649,6 +4442,20 @@ export type SbOnDemand = {
       };
     },
     {
+      name: "queuePayRewardsParams";
+      type: {
+        kind: "struct";
+        fields: [];
+      };
+    },
+    {
+      name: "queuePaySubsidyParams";
+      type: {
+        kind: "struct";
+        fields: [];
+      };
+    },
+    {
       name: "queueRemoveMrEnclaveEvent";
       type: {
         kind: "struct";
@@ -3681,6 +4488,25 @@ export type SbOnDemand = {
       };
     },
     {
+      name: "queueResetLutParams";
+      type: {
+        kind: "struct";
+        fields: [
+          {
+            name: "recentSlot";
+            type: "u64";
+          },
+        ];
+      };
+    },
+    {
+      name: "queueResetVaultParams";
+      type: {
+        kind: "struct";
+        fields: [];
+      };
+    },
+    {
       name: "queueSetConfigsParams";
       type: {
         kind: "struct";
@@ -3702,6 +4528,25 @@ export type SbOnDemand = {
             type: {
               option: "i64";
             };
+          },
+        ];
+      };
+    },
+    {
+      name: "queueSetNcnParams";
+      type: {
+        kind: "struct";
+        fields: [];
+      };
+    },
+    {
+      name: "queueSetVaultParams";
+      type: {
+        kind: "struct";
+        fields: [
+          {
+            name: "enable";
+            type: "bool";
           },
         ];
       };
@@ -3820,10 +4665,16 @@ export type SbOnDemand = {
             };
           },
           {
+            name: "ethSigner";
+            type: {
+              array: ["u8", 20];
+            };
+          },
+          {
             name: "ebuf4";
             docs: ["Reserved."];
             type: {
-              array: ["u8", 32];
+              array: ["u8", 12];
             };
           },
           {
@@ -4036,36 +4887,10 @@ export type SbOnDemand = {
             type: "u64";
           },
           {
-            name: "currentEpoch";
+            name: "reserved2";
             type: {
-              defined: {
-                name: "stateEpochInfo";
-              };
+              array: ["u8", 136];
             };
-          },
-          {
-            name: "nextEpoch";
-            type: {
-              defined: {
-                name: "stateEpochInfo";
-              };
-            };
-          },
-          {
-            name: "finalizedEpoch";
-            type: {
-              defined: {
-                name: "stateEpochInfo";
-              };
-            };
-          },
-          {
-            name: "stakePool";
-            type: "pubkey";
-          },
-          {
-            name: "stakeProgram";
-            type: "pubkey";
           },
           {
             name: "switchMint";
@@ -4094,7 +4919,7 @@ export type SbOnDemand = {
             type: "u8";
           },
           {
-            name: "subsidyAmount";
+            name: "padding3";
             type: "u32";
           },
           {
@@ -4106,9 +4931,19 @@ export type SbOnDemand = {
             type: "u32";
           },
           {
+            name: "padding4";
+            type: {
+              array: ["u8", 4];
+            };
+          },
+          {
+            name: "subsidyAmount";
+            type: "u64";
+          },
+          {
             name: "ebuf6";
             type: {
-              array: ["u8", 28];
+              array: ["u8", 16];
             };
           },
           {
@@ -4146,30 +4981,6 @@ export type SbOnDemand = {
       };
     },
     {
-      name: "stateEpochInfo";
-      serialization: "bytemuck";
-      repr: {
-        kind: "c";
-      };
-      type: {
-        kind: "struct";
-        fields: [
-          {
-            name: "id";
-            type: "u64";
-          },
-          {
-            name: "reserved1";
-            type: "u64";
-          },
-          {
-            name: "slotEnd";
-            type: "u64";
-          },
-        ];
-      };
-    },
-    {
       name: "stateInitParams";
       type: {
         kind: "struct";
@@ -4190,14 +5001,6 @@ export type SbOnDemand = {
             type: "u8";
           },
           {
-            name: "stakePool";
-            type: "pubkey";
-          },
-          {
-            name: "stakeProgram";
-            type: "pubkey";
-          },
-          {
             name: "addAdvisory";
             type: "u16";
           },
@@ -4206,24 +5009,12 @@ export type SbOnDemand = {
             type: "u16";
           },
           {
-            name: "epochLength";
-            type: "u32";
-          },
-          {
-            name: "resetEpochs";
-            type: "bool";
-          },
-          {
             name: "switchMint";
             type: "pubkey";
           },
           {
-            name: "enableStaking";
-            type: "u8";
-          },
-          {
             name: "subsidyAmount";
-            type: "u32";
+            type: "u64";
           },
           {
             name: "baseReward";
@@ -4236,6 +5027,38 @@ export type SbOnDemand = {
           {
             name: "rmCostWl";
             type: "pubkey";
+          },
+        ];
+      };
+    },
+    {
+      name: "testUpdateOracleStatsParams";
+      type: {
+        kind: "struct";
+        fields: [
+          {
+            name: "newRewardScore";
+            type: "u64";
+          },
+        ];
+      };
+    },
+    {
+      name: "vaultInfo";
+      serialization: "bytemuck";
+      repr: {
+        kind: "c";
+      };
+      type: {
+        kind: "struct";
+        fields: [
+          {
+            name: "vaultKey";
+            type: "pubkey";
+          },
+          {
+            name: "lastRewardEpoch";
+            type: "u64";
           },
         ];
       };
