@@ -4,6 +4,7 @@ import idl from "../target/idl/lottery.json";
 import {
   clusterApiUrl,
   Connection,
+  Keypair,
   LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
@@ -11,7 +12,7 @@ import {
 } from "@solana/web3.js";
 import { SbOnDemand } from "./fixtures/sb_on_demand";
 import onDemandIdl from "./fixtures/sb_on_demand.json";
-import { FUNDED_KEYPAIR } from "./constants";
+import { BASE_FEE, FUNDED_KEYPAIR } from "./constants";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
 
@@ -39,5 +40,19 @@ export async function fundKeypair(
   const tx = new Transaction().add(ix);
   tx.feePayer = FUNDED_KEYPAIR.publicKey;
   const signature = await connection.sendTransaction(tx, [FUNDED_KEYPAIR]);
+  await connection.confirmTransaction(signature);
+}
+
+export async function defundKeypair(keypair: Keypair) {
+  const remainingBal = await connection.getBalance(keypair.publicKey);
+
+  const ix = SystemProgram.transfer({
+    fromPubkey: keypair.publicKey,
+    toPubkey: FUNDED_KEYPAIR.publicKey,
+    lamports: remainingBal - BASE_FEE,
+  });
+  const tx = new Transaction().add(ix);
+  tx.feePayer = keypair.publicKey;
+  const signature = await connection.sendTransaction(tx, [keypair]);
   await connection.confirmTransaction(signature);
 }

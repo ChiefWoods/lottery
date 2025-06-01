@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, test } from "bun:test";
+import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { Lottery } from "../target/types/lottery";
 import { BN, Program } from "@coral-xyz/anchor";
 import { SbOnDemand } from "./fixtures/sb_on_demand";
@@ -9,7 +9,7 @@ import {
   TransactionMessage,
   VersionedTransaction,
 } from "@solana/web3.js";
-import { fundKeypair, getSetup } from "./setup";
+import { defundKeypair, fundKeypair, getSetup } from "./setup";
 import {
   getAccount,
   getAssociatedTokenAddressSync,
@@ -392,5 +392,11 @@ describe("lottery", () => {
     );
 
     expect(Number(ticketMintAtaAcc.amount)).toEqual(1);
+  });
+
+  afterAll(async () => {
+    for (const kp of [authority, buyer1, buyer2]) {
+      await defundKeypair(kp);
+    }
   });
 });
