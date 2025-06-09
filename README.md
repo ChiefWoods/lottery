@@ -1,6 +1,6 @@
 # Lottery
 
-Ticket lottery for [Turbin3 Builders Cohort](https://turbin3.com/).
+Ticket lottery for [Solana Development Bootcamp](https://github.com/solana-developers/developer-bootcamp-2024).
 
 [Source Repository](https://github.com/ChiefWoods/lottery)
 
